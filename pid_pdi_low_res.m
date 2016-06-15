@@ -68,17 +68,31 @@ end
 
 %px(i) = (centre_final(i,1)-ct(1,1))*(ct_x(1,1)-ct(1,1))+(centre_final(i,2)-ct(1,2))*(ct_x(1,2)-ct(1,2));
 px(i) = sum([centre_final(i,1)-ct(1,1) , centre_final(i,2)-ct(1,2)].*i_cap);
-kdx = -0.0000023*246.0973*2;
-kdy = 0.0000023*147.8311*2;
-kpx= -0.0000007*246.0973*2;
-kpy= 0.00000116*147.8311*2;
+kdx = -0.0000025*246.0973*2;
+kdy = 0.0000025*147.8311*2;
+kpx= -0.0000009*246.0973*2;
+kpy= 0.00000119*147.8311*2;
 %kdx = 0; kdy = 0;
 %kix= -0.00000005;
 %kiy=  0.00000010;
+%kix= -0.0000009*246.0973*2/50;
+%kiy= 0.00000119*147.8311*2/50;
+if(i~=1)
+    if(px(i)*px(i-1)<0 && i~=1)
+        ix = 0;
+    end
+end
+    
+if(i~=1)
+    if(py(i)*py(i-1)<0 && i~=1)
+        iy = 0;
+    end
+end
+
 ix=ix+px(i);
 iy=iy+py(i);
-posx(i) = 24/180 + kpx*px(i) + kdx*dx   ; 
-posy(i) = 104/180 + kpy*py(i) + kdy*dy    ;
+posx(i) = 24/180 + kpx*px(i) + kdx*dx + kix*ix  ; 
+posy(i) = 104/180 + kpy*py(i) + kdy*dy  + kiy*iy ;
 writePosition(sx,posx(i));
 writePosition(sy,posy(i));
 
