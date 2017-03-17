@@ -1,19 +1,20 @@
-a = arduino('com4' , 'uno' , 'Libraries' , 'Servo' );
-sx = servo(a , 9, 'MinPulseDuration', 544*10^-6, 'MaxPulseDuration', 2400*10^-6); %default 544, 2400
-sy = servo(a , 10, 'MinPulseDuration', 544*10^-6, 'MaxPulseDuration', 2400*10^-6); %default 544, 2400
-cam = webcam('USB Video Device');
+a = arduino('com3' , 'uno' , 'Libraries' , 'Servo' );
+sx = servo(a , 10, 'MinPulseDuration', 544*10^-6, 'MaxPulseDuration', 2400*10^-6); %default 544, 2400
+sy = servo(a , 9, 'MinPulseDuration', 544*10^-6, 'MaxPulseDuration', 2400*10^-6); %default 544, 2400
+cam = webcam('USB2.0 Camera');
+cam.Resolution='320x240';
 %%
-writePosition(sx,24.0/180.0);
-writePosition(sy,102.0/180.0);
+writePosition(sx,65.0/180.0);
+writePosition(sy,24.0/180.0);
 fprintf('arduino and servo\n');
 %%
 iter=500;
 
 ct_x=zeros([1 2]);
 ct_y=zeros([1 2]);
-ct_y=[80.3422 114.0141]*2;
-ct_x=[22.5766 69.0824]*2;
-ct=[79.5659 70.5266]*2;	
+ct_y=[155, 231];
+ct_x=[295, 137];
+ct=[163, 141];		
 pics=cell(1,iter);
 rgb=cell(1,iter);
 centre_final=zeros([iter 2]);
@@ -36,6 +37,7 @@ py = zeros([iter,1]);
 preview(cam)
 
 %%
+kix = 0; kiy = 0;
 ix = 0; iy = 0;
 dx=0;
 dy=0;
@@ -75,8 +77,8 @@ kpy= 0.00000119*147.8311*2;
 %kdx = 0; kdy = 0;
 %kix= -0.00000005;
 %kiy=  0.00000010;
-%kix= -0.0000009*246.0973*2/50;
-%kiy= 0.00000119*147.8311*2/50;
+kix= -0.0000009*246.0973*2/50;
+kiy= 0.00000119*147.8311*2/50;
 if(i~=1)
     if(px(i)*px(i-1)<0 && i~=1)
         ix = 0;
@@ -91,8 +93,8 @@ end
 
 ix=ix+px(i);
 iy=iy+py(i);
-posx(i) = 24/180 + kpx*px(i) + kdx*dx + kix*ix  ; 
-posy(i) = 104/180 + kpy*py(i) + kdy*dy  + kiy*iy ;
+posx(i) = 65/180 + kpx*px(i) + kdx*dx + kix*ix  ; 
+posy(i) = 25/180 + kpy*py(i) + kdy*dy  + kiy*iy ;
 writePosition(sx,posx(i));
 writePosition(sy,posy(i));
 
@@ -101,8 +103,7 @@ writePosition(sy,posy(i));
 
 end
 %%
-writePosition(sx,24.0/180.0);
-writePosition(sy,104.0/180.0);
-fprintf('ardhuino and servo\n');
-
+writePosition(sx,65.0/180.0);
+writePosition(sy,24.0/180.0);
+fprintf('arduino and servo\n');
 fprintf('DONE');
